@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func SendMessage(url string, message *Message) error {
+func (message *Message) SendMessage(url string) error {
 	payload := new(bytes.Buffer)
 
 	err := json.NewEncoder(payload).Encode(message)

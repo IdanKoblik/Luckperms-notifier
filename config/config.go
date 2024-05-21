@@ -7,40 +7,69 @@ import (
 )
 
 type Config struct {
-	Username string `json:"username"`
-	URL string `json:"url"`
+	URL                string `json:"url"`
+	MongoConnectionURL string `json:"mongo_connection_url"`
+	MongoDatabase      string `json:"mongo_database"`
+	MongoCollection string `json:"mongo_collection"`
 }
 
-func GetName() (string, error) {
+var cachedConfig Config
+
+func readConfig() error {
 	file, err := os.ReadFile("config.json")
 	if err != nil {
 		log.Fatal("Error reading config file: ", err)
-		return "", err
+		return err
 	}
 
-	var config Config
-	err = json.Unmarshal(file, &config)
+	err = json.Unmarshal(file, &cachedConfig)
 	if err != nil {
 		log.Fatal("Error parsing JSON: ", err)
-		return "", err
+		return err
 	}
 
-	return config.Username, nil
+	return nil
+}
+
+func GetConfig() (Config, error) {
+	if cachedConfig == (Config{}) {
+		err := readConfig()
+		if err != nil {
+			return Config{}, err
+		}
+	}
+	return cachedConfig, nil
 }
 
 func GetURL() (string, error) {
-	file, err := os.ReadFile("config.json")
+	config, err := GetConfig()
 	if err != nil {
-		log.Fatal("Error reading config file: ", err)
 		return "", err
 	}
-
-	var config Config
-	err = json.Unmarshal(file, &config)
-	if err != nil {
-		log.Fatal("Error parsing JSON: ", err)
-		return "", err
-	}
-
 	return config.URL, nil
 }
+
+func GetMongoURL() (string, error) {
+	config, err := GetConfig()
+	if err != nil {
+		return "", err
+	}
+	return config.MongoConnectionURL, nil
+}
+
+func GetMongoDatabase() (string, error) {
+	config, err := GetConfig()
+	if err != nil {
+		return "", err
+	}
+	return config.MongoDatabase, nil
+}
+
+func GetMongoCollection() (string, error) {
+	config, err := GetConfig()
+	if err != nil {
+		return "", err
+	}
+	return config.MongoCollection, nil
+}
+

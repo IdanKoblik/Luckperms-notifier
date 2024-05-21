@@ -1,35 +1,43 @@
 package main
 
 import (
+	"context"
 	"log"
-	"luckperms-notifier/utils"
 	"luckperms-notifier/config"
+	"luckperms-notifier/mongo_watcher"
+
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func main() {
-	username, err := config.GetName()
-	if err != nil {
-		log.Fatalf("Error while getting webhook username: %v\n", err)
+	mongoURL, err := config.GetMongoURL(); if err != nil {
+		log.Fatalf("%v\n", err)
+	}
+	
+	clientOptions := options.Client().ApplyURI(mongoURL)
+    client, err := mongo.Connect(context.Background(), clientOptions); if err != nil {
+        log.Fatalf("Error connecting to MongoDB: %v\n", err)
+        return
+    }
+
+	err = client.Ping(context.Background(), nil); if err != nil {
+        log.Fatalf("Error pinging MongoDB: %v\n", err)
+        return
+    }
+
+	databaseName, err := config.GetMongoDatabase(); if err != nil {
+		log.Fatalf("%v\n", err)
+		return
 	}
 
-	url, err := config.GetURL()
-	if (err != nil) {
-		log.Fatalf("Error while getting webhook url: %v\n", err)
+	mongoCollection, err := config.GetMongoCollection(); if err != nil {
+		log.Fatalf("%v\n", err)
+		return
 	}
 
-	test := "test"
-
-	embed := utils.Embed{
-		Title: &test,
-	}
-
-	message := utils.Message{
-		Username: &username,
-		Embeds:   &[]utils.Embed{embed},
-	}
-
-	err = utils.SendMessage(url, &message)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Printf("Started system for db: %s\n", databaseName)
+    collection := client.Database(databaseName).Collection(mongoCollection)
+	options := options.ChangeStream().SetFullDocument(options.UpdateLookup)
+	mongo_watcher.WatchCollection(collection, options)
 }
