@@ -34,4 +34,4 @@ jobs:
           automatic_release_tag: "${{ github.run_number }}"
           title: Binaries assets
           files: |
-            ./build/luckperms-notifier
+            ./luckperms-notifier
