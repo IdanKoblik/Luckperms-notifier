@@ -27,7 +27,7 @@ jobs:
         run: go build
 
       - name: Binaries
-        uses: IdanKoblik/action-automatic-releases@v0.2
+        uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: "${{ secrets.TOKEN }}"
           prerelease: false
