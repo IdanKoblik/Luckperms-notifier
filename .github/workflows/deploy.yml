@@ -9,7 +9,6 @@ permissions: write-all
 jobs:
   build-for-release:
     runs-on: ubuntu-latest
-    needs: build-and-test
     permissions:
       contents: write
       pull-requests: write
@@ -35,4 +34,4 @@ jobs:
           automatic_release_tag: "${{ github.run_number }}"
           title: Binaries assets
           files: |
-            ./luckperms-notifier
+            ./build/luckperms-notifier
