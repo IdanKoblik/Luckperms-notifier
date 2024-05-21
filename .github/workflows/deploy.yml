@@ -17,8 +17,11 @@ jobs:
         with:
           go-version: '1.22.2'
 
+      - name: Create dir
+        run: mkdir build
+
       - name: Build
-        working-directory: ./build
+        working-directory: /build
         run: go build
 
   build-for-release:
@@ -39,7 +42,7 @@ jobs:
           go-version: '1.22.2'
 
       - name: Build API for Linux
-        working-directory: ./build
+        working-directory: /build
         run: GOOS=linux GOARCH=amd64 go build -o luckperms-notifier
 
       - name: Binaries
