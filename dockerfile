@@ -15,7 +15,7 @@ ADD . /app/
 WORKDIR /app
 RUN go mod download
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /luckperms-notifier
+RUN go build
 
-CMD ["/bin/bash", "/luckperms-notifier"]
+CMD ["/bin/bash", "./luckperms-notifier"]
 
