@@ -12,10 +12,10 @@ COPY go.mod go.sum /app/
 
 COPY . /app/
 
-WORKDIR /app
+WORKDIR /app/
 RUN go mod download
 
-RUN go build -ldflags="-buildmode=exe -trimpath -buildid= -w -s -buildvcs=false"
+RUN go build
 
 CMD ["/bin/bash", "./luckperms-notifier"]
 
