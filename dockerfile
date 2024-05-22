@@ -9,8 +9,12 @@ USER container
 ENV  USER=container HOME=/home/container
 
 COPY go.mod go.sum /app/
-
 COPY . /app/
+
+USER root
+RUN chown -R container:container /app
+
+USER container
 
 WORKDIR /app/
 RUN go mod tidy
@@ -19,5 +23,6 @@ RUN GOOS=linux GOARCH=amd64 \
     go build \
     -trimpath 
 
-CMD ["/bin/bash", "./luckperms-notifier"]
+RUN chmod +x luckperms-notifier
 
+CMD ["./luckperms-notifier"]
