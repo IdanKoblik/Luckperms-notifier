@@ -1,4 +1,4 @@
-FROM golang:1.22.3-alpine3.13
+FROM golang:1.22.3-alpine3.19
 
 MAINTAINER Idan, <idankob@gmail.com>
 
