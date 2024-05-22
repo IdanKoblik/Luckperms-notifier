@@ -13,11 +13,11 @@ COPY go.mod go.sum /app/
 COPY . /app/
 
 WORKDIR /app/
-RUN go mod download
+RUN go mod tidy
 
 RUN GOOS=linux GOARCH=amd64 \
     go build \
     -trimpath 
-    
+
 CMD ["/bin/bash", "./luckperms-notifier"]
 
