@@ -9,7 +9,7 @@ USER container
 ENV  USER=container HOME=/home/container
 
 COPY go.mod go.sum /app/
-RUN go mod download
+RUN go mod tidy
 
 ADD . /app/
 
