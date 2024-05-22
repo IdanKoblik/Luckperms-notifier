@@ -11,6 +11,4 @@ ENV  USER=container HOME=/home/container
 COPY go.mod go.sum /app/
 COPY luckperms-notifier /app/
 
-WORKDIR /app/
-
-CMD ["/luckperms-notifier"]
+CMD ["/app/luckperms-notifier"]
