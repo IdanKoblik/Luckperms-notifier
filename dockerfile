@@ -13,4 +13,4 @@ COPY luckperms-notifier /app/
 
 WORKDIR /app/
 
-CMD ["./luckperms-notifier"]
+CMD ["/luckperms-notifier"]
