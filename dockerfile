@@ -15,7 +15,7 @@ COPY . /app/
 WORKDIR /app/
 RUN go mod download
 
-RUN go build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /luckperms-notifier 
 
 CMD ["/bin/bash", "./luckperms-notifier"]
 
