@@ -6,6 +6,9 @@ on:
 
 permissions: write-all
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -40,7 +43,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.TOKEN }}
 
       - name: Extract Docker metadata
         id: meta
