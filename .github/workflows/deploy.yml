@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ "7-docker" ]
+    branches: [ "main" ]
 
 permissions: write-all
 
