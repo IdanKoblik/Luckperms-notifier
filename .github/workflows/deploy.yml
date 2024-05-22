@@ -25,7 +25,10 @@ jobs:
           go-version: '1.22.2'
 
       - name: Build
-        run: go build
+        run: |
+              go mod download
+              go build
+              ls
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
