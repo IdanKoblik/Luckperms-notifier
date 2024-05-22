@@ -15,7 +15,7 @@ ADD . /app/
 WORKDIR /app
 RUN go mod download
 
-RUN go build
+RUN go build -ldflags="-buildmode=exe -trimpath -buildid= -w -s -buildvcs=false"
 
 CMD ["/bin/bash", "./luckperms-notifier"]
 
