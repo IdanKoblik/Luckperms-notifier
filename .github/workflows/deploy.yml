@@ -56,7 +56,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.REGISTRY }}/luckperms-notifier:latest
+          tags: ${{ env.REGISTRY }}/idankoblik/luckperms-notifier:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
