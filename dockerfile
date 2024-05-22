@@ -8,10 +8,10 @@ RUN apk add --no-cache --update curl ca-certificates openssl git tar bash sqlite
 USER container
 ENV  USER=container HOME=/home/container
 
-COPY go.mod go.sum ./
+COPY go.mod go.sum /app/
 RUN go mod download
 
-ADD . .
+ADD . /app/
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /luckperms-notifier
 
