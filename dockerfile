@@ -9,9 +9,11 @@ USER container
 ENV  USER=container HOME=/home/container
 
 COPY go.mod go.sum /app/
-RUN go mod tidy
 
 ADD . /app/
+
+WORKDIR /app
+RUN go mod download
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o /luckperms-notifier
 
