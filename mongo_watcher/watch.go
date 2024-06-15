@@ -7,7 +7,6 @@ import (
 	"luckperms-notifier/config"
 	"luckperms-notifier/endpoints"
 	"luckperms-notifier/utils"
-	"strings"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
