@@ -7,6 +7,7 @@ import (
 	"luckperms-notifier/config"
 	"luckperms-notifier/endpoints"
 	"luckperms-notifier/utils"
+	"strings"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -19,6 +20,9 @@ type ChangeEvent struct {
     } `bson:"documentKey"`
     FullDocument struct {
         Description string `bson:"description"`
+        Source struct {
+            Name string `bson:"name"`
+        } `bson:"source"`
         Target struct {
             Type string `bson:"type"`
             Name string `bson:"name"`
@@ -71,10 +75,15 @@ func getEmbed(changeEvent *ChangeEvent, webhookURL string) (utils.Embed, error) 
     }
 
     description := "**" + changeEvent.FullDocument.Description + "**"
+    fields := []utils.Field{}
+    fields = append(fields, getTypeField(changeEvent))
+    fields = append(fields, getNameField(changeEvent))
+    fields = append(fields, getSourceField(changeEvent))
+
     return utils.Embed {
         Title: &TITLE,
         Description: &description,
-        Fields: &[]utils.Field{getTypeField(changeEvent), getNameField(changeEvent)},
+        Fields: &fields,
         Color: &COLOR,
         Thumbnail: &thumbnail,
         Footer: &utils.Footer{
@@ -127,4 +136,16 @@ func getThumbnail(webhookURL string) (utils.Thumbnail, error) {
 
     url := fmt.Sprintf("https://cdn.discordapp.com/avatars/%s/%s.png", hook.Id, hook.Avatar)
     return utils.Thumbnail{Url: &url}, nil
+}
+
+func getSourceField(changeEvent *ChangeEvent) (utils.Field) {
+    source := changeEvent.FullDocument.Source.Name
+    sourceFieldName := "Source"
+    inline := true
+
+    return utils.Field{
+        Name: &sourceFieldName,
+        Value: &source,
+        Inline: &inline,
+    }
 }
